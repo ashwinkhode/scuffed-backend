@@ -4,12 +4,14 @@ import {
   withItemData,
   statelessSessions,
 } from '@keystone-next/keystone/session';
+import { CartItem } from './schemas/CartItem';
 import 'dotenv/config';
 import { User } from './schemas/User';
 import { Product } from './schemas/Product';
 import { ProductImage } from './schemas/ProductImage';
 import { insertSeedData } from './seed-data';
 import { sendPasswordResetMail } from './lib/mail';
+import { extendGraphqlSchema } from './mutations';
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/scuffed';
 
@@ -55,7 +57,9 @@ export default withAuth(
       User,
       Product,
       ProductImage,
+      CartItem,
     }),
+    extendGraphqlSchema,
     ui: {
       // Show the UI only for people who pass this test
       isAccessAllowed: ({ session }) =>
